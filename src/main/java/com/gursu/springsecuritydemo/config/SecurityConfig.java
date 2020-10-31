@@ -1,5 +1,6 @@
 package com.gursu.springsecuritydemo.config;
 
+import com.gursu.springsecuritydemo.model.Permission;
 import com.gursu.springsecuritydemo.model.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,9 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
-                .antMatchers(HttpMethod.DELETE,"/api/**").hasRole(Role.ADMIN.name())
-                .antMatchers(HttpMethod.POST, "/api/**").hasRole(Role.ADMIN.name())
+                .antMatchers(HttpMethod.GET, "/api/**").hasAuthority(Permission.DEVELOPER_READ.getPermission())
+                .antMatchers(HttpMethod.DELETE,"/api/**").hasAuthority(Permission.DEVELOPER_WRITE.getPermission())
+                .antMatchers(HttpMethod.POST, "/api/**").hasAuthority(Permission.DEVELOPER_WRITE.getPermission())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -37,15 +38,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         return new InMemoryUserDetailsManager(
                 User.builder()
-                        .password("admin")
-                        .username(encoder().encode("admin"))
-                        .roles(Role.ADMIN.name())
+                        .username("admin")
+                        .password(encoder().encode("admin"))
+                        .authorities(Role.ADMIN.getAuthorities())
                         .build(),
 
                 User.builder()
                         .username("user")
                         .password(encoder().encode("user"))
-                        .roles(Role.USER.name())
+                        .authorities(Role.USER.getAuthorities())
                         .build()
         );
     }
