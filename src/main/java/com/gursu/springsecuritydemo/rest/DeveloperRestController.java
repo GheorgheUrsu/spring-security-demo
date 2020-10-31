@@ -29,4 +29,15 @@ public class DeveloperRestController {
                          .findFirst()
                          .orElseThrow(()-> new RuntimeException("Developer with ID: " + developerId + " not found!"));
     }
+
+    @PostMapping
+    public Developer create(@RequestBody Developer developer){
+        this.DEVELOPERS.add(developer);
+        return developer;
+    }
+
+    @DeleteMapping("/{developerId}")
+    public void deleteById(@PathVariable Long developerId){
+        this.DEVELOPERS.removeIf(developer -> developer.getId().equals(developerId));
+    }
 }
