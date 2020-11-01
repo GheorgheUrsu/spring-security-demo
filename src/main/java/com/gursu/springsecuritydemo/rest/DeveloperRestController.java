@@ -1,6 +1,7 @@
 package com.gursu.springsecuritydemo.rest;
 
 import com.gursu.springsecuritydemo.model.Developer;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class DeveloperRestController {
     }
 
     @GetMapping("/{developerId}")
+    @PreAuthorize("hasAnyAuthority('DEVELOPER:READ')")
     public Developer getById(@PathVariable Long developerId){
         return DEVELOPERS.stream()
                          .filter(developer -> developer.getId().equals(developerId))
@@ -31,12 +33,14 @@ public class DeveloperRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('DEVELOPER:WRITE')")
     public Developer create(@RequestBody Developer developer){
         this.DEVELOPERS.add(developer);
         return developer;
     }
 
     @DeleteMapping("/{developerId}")
+    @PreAuthorize("hasAnyAuthority('DEVELOPER:WRITE')")
     public void deleteById(@PathVariable Long developerId){
         this.DEVELOPERS.removeIf(developer -> developer.getId().equals(developerId));
     }
