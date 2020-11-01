@@ -19,29 +19,29 @@ public class DeveloperRestController {
 
 
     @GetMapping
-    public List<Developer> getAll(){
+    public List<Developer> getAll() {
         return DEVELOPERS;
     }
 
     @GetMapping("/{developerId}")
     @PreAuthorize("hasAnyAuthority('DEVELOPER:READ')")
-    public Developer getById(@PathVariable Long developerId){
+    public Developer getById(@PathVariable Long developerId) {
         return DEVELOPERS.stream()
-                         .filter(developer -> developer.getId().equals(developerId))
-                         .findFirst()
-                         .orElseThrow(()-> new RuntimeException("Developer with ID: " + developerId + " not found!"));
+                .filter(developer -> developer.getId().equals(developerId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Developer with ID: " + developerId + " not found!"));
     }
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('DEVELOPER:WRITE')")
-    public Developer create(@RequestBody Developer developer){
+    public Developer create(@RequestBody Developer developer) {
         this.DEVELOPERS.add(developer);
         return developer;
     }
 
     @DeleteMapping("/{developerId}")
     @PreAuthorize("hasAnyAuthority('DEVELOPER:WRITE')")
-    public void deleteById(@PathVariable Long developerId){
+    public void deleteById(@PathVariable Long developerId) {
         this.DEVELOPERS.removeIf(developer -> developer.getId().equals(developerId));
     }
 }
