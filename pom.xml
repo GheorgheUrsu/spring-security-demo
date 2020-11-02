@@ -17,6 +17,7 @@
     <properties>
         <java.version>11</java.version>
         <mysql.connector.version>8.0.21</mysql.connector.version>
+        <json.web.token.version>0.9.1</json.web.token.version>
     </properties>
 
     <dependencies>
@@ -45,6 +46,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.connector.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${json.web.token.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
